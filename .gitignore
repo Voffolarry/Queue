@@ -1,0 +1,41 @@
+# Fichiers objet et exécutables
+*.o
+*.obj
+*.exe
+
+# Fichiers de dépendances
+*.d
+
+# Fichiers de compilation
+*.cpp~
+*.h~
+*.hpp~
+
+# Répertoires de build
+build/
+debug/
+release/
+
+# Fichiers de logs
+*.log
+
+# Fichiers de swaps
+*.swp
+# Fichiers de sauvegarde
+*.bak
+
+# Répertoire de dépôt de packages
+vendor/
+
+# Fichiers de configuration de l'IDE
+.idea/
+.vscode/
+.cproject
+
+# Fichiers de compilation automatisée
+Makefile~
+CMakeCache.txt
+CMakeFiles/
+
+# Fichiers de tests
+test/
