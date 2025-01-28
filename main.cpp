@@ -5,6 +5,12 @@
 #include <stdlib.h> //for the random function
 #include <unistd.h>
 
+struct node{
+    char data[20];
+    node* next;
+};
+
+
 /*----------------------DECLARATION OF THE FUNCTION PROTOTYPES------------------------*/
 
 void insert(char array[10][100]);
