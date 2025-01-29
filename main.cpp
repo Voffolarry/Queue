@@ -3,127 +3,101 @@
 #include <time.h>    // for clock
 #include <string.h> //strcpy
 #include <stdlib.h> //for the random function
-#include <unistd.h>
-
+#include <unistd.h>// for sleep function
+// declaration of a structure node to store name (in data ) and store address (next)
 struct node{
     char data[20];
     node* next;
 };
 
 
-/*----------------------DECLARATION OF THE FUNCTION PROTOTYPES------------------------*/
 
-void insert(char array[10][100]);
-void fill(char array[10][100],int i);
-void display(char array[10][100]);
-void enqueue(char array[10][100] ,int index,char name[20]);
+
+/*----------------------DECLARATION OF THE FUNCTION PROTOTYPES------------------------*/
+void display(node* names);
+void enqueue(node* names,char name[20]);
 void dequeue(char array[10][100] );
+
 
 /*-------------------THE MAIN FUNCTION------------------*/
 int main(){
+    node* names_f=nullptr;// the head of the queue
+    node* names_b=nullptr;//the tail of the queue
     int i=0;
     int j=0;
-    int random;
+    int random;//to store the random number 
     char a[20];
-    int index_name=0;
-    int index_f=0;
-    int index_b=0;
+    int index_name=0;//to knew which name will d]be taken in the array
+    int index_b=0;//to limit the number of clients
+    int index_f=0;//index of the first client
     char store_client[10][100];
     //  \033[1;31  \033[0m
+    //to simulate the arrival of clients of differents names 
     char array[100][10]={"larry","larson","jenny","lisa","miranda","megane","alicia","fred","sebastian","marie","lorel","laeticia","marcus","robert","simon","pierre","nicolas","nadine","shella","baptiste","logan","zayne","jake","zack","milene","maurice","orlane","otis","lyana","alphonse","bobby","nalla","nolwen","diam's","adele","melissa","samantha","carla","karl","maelys","ebony","thomas","julie","axel","julien","lenie","helena","franck","ulysse","\0"};// array[a][b]  a is for num of character and b is for num of word
+    //message for users 
     std::cout<<" === ==== QUEUE SIMULATION ==== === \n";
     std::cout<<"_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n";
-    fill(store_client,index_b);
-    display(store_client);
-    srand(time(NULL));
-    while(true){
-        random=rand()%10;//generate a number between 0 and 9
-        if((random%2)==0){ // if the remainder when divided by 2 is equal to 0, execute    
-        
-        if(index_b==9)
-        {
+    //informing the user about the diffrents probability
+    std::cout<<"Probability of a client arriving 0.44 \n";
+    std::cout<<"Probability of a client to be serve 0.66 \n";
+    // display of empty queue
+    display(names_f);
+    srand(time(NULL));//randomize so as to repest stochastic properties
+    while(true)
+    {
+        random=rand()%10+1;//generate a number between 0 and 9
+        //determining if it will be a dequeue or an enqueue operation    
+        if((random%2)==0){ //if even then we enqueue
+        //if even the i enqueue else i dequeue 
+        if(index_b==9)//to limit maximun 10 personne in the queue
+        {//messsage for user about the queue
             std::cout<<"queue is full\n";
         }
-
         else {
-            enqueue(store_client,index_b,array[index_name]);//a==name
+            //function call
+        enqueue(names_f,array[index_name]);//a==name
+        //information about the arrival of clents 
         std::cout<<"The client- "<<store_client[index_b]<<" has arrived\n";
-        sleep(1);
-        display(store_client);
-        index_b++;
-        index_name++;
-        std::cout<<"\n";
+        sleep(1);// to delay the display
+        //function call
+        display(names_f);
+        index_b++;//incrementation of index_b to know if the maximum number of users have arrive 
+        index_name++;// incrementing to go to the next name of array
+        std::cout<<"\n";// to go to the next line 
         }
 
         }
-        else
+        else// if its an odd number the we do the a dequeue opertaion
         {
 
             if(index_b>0){// j is for if there are already 3 people in the line,index_b there is still space in the line
                 std::cout<<"The client- "<<store_client[index_f]<<" has been served\n";
                 sleep(1);// delay 
                 dequeue(store_client);
-                display(store_client);
-                index_b--;
-                j=0;
-                std::cout<<"\n";
+                display(names_f);
+                index_b--;//if the dequeue the we should reduce the index_d since a client left
+                std::cout<<"\n";// moving to the next line
             }
-            else if(index_b==0)
+            else if(index_b==0)//message for the user
             {
                 std::cout<<"queue is empty\n";
             }
         }
-        j++;
-    sleep(2);
-    fill(store_client,index_b);
+           sleep(2);//to delay the printing
 
-
-    if(index_name==30){
+        if(index_name==30){// to stop the execution after a certain number of names from array have been us
         break;
-    }
-
-
-    }
-    
-    
-    
-    /*
-    
-    while(true){
-        a=clock(); 
-        int store_client[10];
-        fill(store_client);
-        if(a==2)
-         {
-        
-
          }
-        display(store_client);
-
-        system("cls");
-
-        std::cout<<"\n";
-    }*/
+    }
+    
+   free(names_f);//free the memory
+   free(names_b);//
 }
+
+
 /*------------------IMPLEMENTATION OF THE FUNCTION PROTOYPES--------------------*/
 
-/* The fill function used to fill the remaining cells with a character 
-    to indicate that there is still space for other clients
-*/
-void fill(char array[10][100],int j){
 
-    int i;
-    char a[10]={'-'};
-    for(i=j;i<10;i++){
-        if(strcmp(array[i],a)==!0)
-        {
-            {
-                strcpy(array[i],a);
-
-        }
-        }
-    }
-}
 // Implementation of the Dequeue function used to remove the first name of the queue and replace with the second
 
 void dequeue(char array[10][100]){
@@ -133,23 +107,32 @@ void dequeue(char array[10][100]){
 }
 
 // Implementation of the Enqueue function used to add names of clients behind the last element in the list
-void enqueue(char array[10][100] ,int index,char name[20])
+void enqueue(node* names ,char name[20])
 {
-    if(index==10){
-        std::cout<<"full"; //If the space dedicated for the names is full, the message is displayed
-    }
-    else{
-        strcpy(array[index],name); // if the space is not full, we add names untill it is full
-    }
-    std::cout<<"\n";
-
+    //creation of new node to store the name 
+    node* new_node=new node ;
+    strcpy(new_node->data,name);//copy the content of name and storing in the new name(new_node->data)
+    new_node->next=nullptr;//make new node to point to null as there is no other element at the end of the list
+    names->next=new_node;//makes the names to point to  new to the new_node
+    names=new_node;
+    free(new_node);//deallocating the memory
 } 
 
 // The display function used to display the state of the list when the clients have arrived and left
-void display(char store_client[10][100]){
+void display(node* names_f){
+    
     std::cout<<"**State: ";
-    for(int i=0;i<10;i++){
-        std::cout<<" Client-"<< store_client[i];
+    int i=0;
+    if(names_f != nullptr){// that's it contain clients
+        node* current =names_f;//creation of current for printing so as to avoid a removal/change of clients
+        while(current!=nullptr){//repeat the loop till we found  null 
+            std::cout<<" Client-" <<current->data;//print the data content at current->data
+            current=current->next;//assigning current to the next list 
+        }
+        free(current);//deallocating the memory
     }
-    std::cout<<"\n";
+    else{
+        std::cout<<" Client-";
+    }
+    std::cout<<"\n";//goes to next line 
 }
